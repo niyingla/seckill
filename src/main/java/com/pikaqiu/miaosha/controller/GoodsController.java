@@ -1,10 +1,13 @@
 package com.pikaqiu.miaosha.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.pikaqiu.miaosha.domain.MiaoshaUser;
+import com.pikaqiu.miaosha.redis.GoodsKey;
+import com.pikaqiu.miaosha.redis.RedisService;
+import com.pikaqiu.miaosha.result.Result;
+import com.pikaqiu.miaosha.service.GoodsService;
+import com.pikaqiu.miaosha.service.MiaoshaUserService;
+import com.pikaqiu.miaosha.vo.GoodsDetailVo;
+import com.pikaqiu.miaosha.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,14 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.spring4.context.SpringWebContext;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
-import com.pikaqiu.miaosha.domain.MiaoshaUser;
-import com.pikaqiu.miaosha.redis.GoodsKey;
-import com.pikaqiu.miaosha.redis.RedisService;
-import com.pikaqiu.miaosha.result.Result;
-import com.pikaqiu.miaosha.service.GoodsService;
-import com.pikaqiu.miaosha.service.MiaoshaUserService;
-import com.pikaqiu.miaosha.vo.GoodsDetailVo;
-import com.pikaqiu.miaosha.vo.GoodsVo;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @RequestMapping("/goods")
@@ -125,13 +123,16 @@ public class GoodsController {
     	long now = System.currentTimeMillis();
     	int miaoshaStatus = 0;
     	int remainSeconds = 0;
-    	if(now < startAt ) {//秒杀还没开始，倒计时
+    	if(now < startAt ) {
+			//秒杀还没开始，倒计时
     		miaoshaStatus = 0;
     		remainSeconds = (int)((startAt - now )/1000);
-    	}else  if(now > endAt){//秒杀已经结束
+    	}else  if(now > endAt){
+			//秒杀已经结束
     		miaoshaStatus = 2;
     		remainSeconds = -1;
-    	}else {//秒杀进行中
+    	}else {
+    		//秒杀进行中
     		miaoshaStatus = 1;
     		remainSeconds = 0;
     	}

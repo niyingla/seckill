@@ -1,11 +1,13 @@
 package com.pikaqiu.miaosha.validator;
-import  javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
+import com.pikaqiu.miaosha.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import com.pikaqiu.miaosha.util.ValidatorUtil;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
+/**
+ * 校验手机注解  实际处理类
+ */
 public class IsMobileValidator implements ConstraintValidator<IsMobile, String> {
 
 	private boolean required = false;

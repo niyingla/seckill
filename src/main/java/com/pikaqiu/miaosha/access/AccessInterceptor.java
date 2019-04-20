@@ -28,12 +28,13 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter{
 	RedisService redisService;
 	
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if(handler instanceof HandlerMethod) {
+		    //获取用户
 			MiaoshaUser user = getUser(request, response);
 			UserContext.setUser(user);
 			HandlerMethod hm = (HandlerMethod)handler;
+			//获取方法上的访问注解
 			AccessLimit accessLimit = hm.getMethodAnnotation(AccessLimit.class);
 			if(accessLimit == null) {
 				return true;
@@ -41,6 +42,8 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter{
 			int seconds = accessLimit.seconds();
 			int maxCount = accessLimit.maxCount();
 			boolean needLogin = accessLimit.needLogin();
+
+			//
 			String key = request.getRequestURI();
 			if(needLogin) {
 				if(user == null) {
