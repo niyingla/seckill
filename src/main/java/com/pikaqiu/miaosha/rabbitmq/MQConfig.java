@@ -1,16 +1,11 @@
 package com.pikaqiu.miaosha.rabbitmq;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.HeadersExchange;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class MQConfig {
@@ -47,6 +42,11 @@ public class MQConfig {
 	public TopicExchange topicExchage(){
 		return new TopicExchange(TOPIC_EXCHANGE);
 	}
+
+	/**
+	 * 绑定队列和交换机之间的关系 # 匹配0个或多个字符
+	 * @return
+	 */
 	@Bean
 	public Binding topicBinding1() {
 		return BindingBuilder.bind(topicQueue1()).to(topicExchage()).with("topic.key1");
