@@ -81,6 +81,11 @@ public class MQConfig {
 	public Queue headerQueue1() {
 		return new Queue(HEADER_QUEUE, true);
 	}
+
+	/**
+	 * header 模式需要massges 中的header 匹配 where 中的 map
+	 * @return
+	 */
 	@Bean
 	public Binding headerBinding() {
 		Map<String, Object> map = new HashMap<String, Object>();
