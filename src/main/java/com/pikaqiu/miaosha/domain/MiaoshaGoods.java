@@ -1,9 +1,16 @@
 package com.pikaqiu.miaosha.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
+@Entity
+@Table
 public class MiaoshaGoods {
+	@Id
 	private Long id;
+	private double miaoshaPrice;
 	private Long goodsId;
 	private Integer stockCount;
 	private Date startDate;

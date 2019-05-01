@@ -1,6 +1,13 @@
 package com.pikaqiu.miaosha.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table
 public class MiaoshaOrder {
+	@Id
 	private Long id;
 	private Long userId;
 	private Long  orderId;
