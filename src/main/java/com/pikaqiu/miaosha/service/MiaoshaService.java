@@ -49,12 +49,19 @@ public class MiaoshaService {
 		}
 	}
 
+	/**
+	 * 获取秒杀结果
+	 * @param userId
+	 * @param goodsId
+	 * @return
+	 */
 	public long getMiaoshaResult(Long userId, long goodsId) {
 		MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
 		//秒杀成功
 		if(order != null) {
 			return order.getOrderId();
 		}else {
+			//获取是否超限
 			boolean isOver = getGoodsOver(goodsId);
 			if(isOver) {
 				return -1;
@@ -165,7 +172,7 @@ public class MiaoshaService {
 
 	private static char[] ops = new char[] {'+', '-', '*'};
 	/**
-	 * + - * 
+	 * + - *
 	 * */
 	private String generateVerifyCode(Random rdm) {
 		int num1 = rdm.nextInt(10);
