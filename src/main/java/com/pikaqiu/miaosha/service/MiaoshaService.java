@@ -64,10 +64,19 @@ public class MiaoshaService {
 		}
 	}
 
+	/**
+	 * 设置redis 库存超了
+	 * @param goodsId
+	 */
 	private void setGoodsOver(Long goodsId) {
 		redisService.set(MiaoshaKey.isGoodsOver, ""+goodsId, true);
 	}
-	
+
+	/**
+	 * 获取redis库存是否超
+	 * @param goodsId
+	 * @return
+	 */
 	private boolean getGoodsOver(long goodsId) {
 		return redisService.exists(MiaoshaKey.isGoodsOver, ""+goodsId);
 	}
@@ -89,6 +98,7 @@ public class MiaoshaService {
 		if(user == null || goodsId <=0) {
 			return null;
 		}
+
 		String str = MD5Util.md5(UUIDUtil.uuid()+"123456");
     	redisService.set(MiaoshaKey.getMiaoshaPath, ""+user.getId() + "_"+ goodsId, str);
 		return str;
