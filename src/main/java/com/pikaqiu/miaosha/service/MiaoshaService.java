@@ -51,7 +51,8 @@ public class MiaoshaService {
 
 	public long getMiaoshaResult(Long userId, long goodsId) {
 		MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
-		if(order != null) {//秒杀成功
+		//秒杀成功
+		if(order != null) {
 			return order.getOrderId();
 		}else {
 			boolean isOver = getGoodsOver(goodsId);

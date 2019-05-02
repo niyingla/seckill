@@ -73,7 +73,7 @@ public class MiaoshaController implements InitializingBean {
 		if(goodsList == null) {
 			return;
 		}
-		//循环保存到缓存
+		//循环库存保存到缓存
 		for(GoodsVo goods : goodsList) {
 			redisService.set(GoodsKey.getMiaoshaGoodsStock, ""+goods.getId(), goods.getStockCount());
 			localOverMap.put(goods.getId(), false);
@@ -163,6 +163,7 @@ public class MiaoshaController implements InitializingBean {
     }
     
     /**
+	 * 获取秒杀结果
      * orderId：成功
      * -1：秒杀失败
      * 0： 排队中
