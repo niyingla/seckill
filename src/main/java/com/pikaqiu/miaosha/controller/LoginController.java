@@ -31,7 +31,13 @@ public class LoginController {
     public String toLogin() {
         return "login";
     }
-    
+
+    /**
+     * 登陆
+     * @param response
+     * @param loginVo
+     * @return
+     */
     @RequestMapping("/do_login")
     @ResponseBody
     public Result<String> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
