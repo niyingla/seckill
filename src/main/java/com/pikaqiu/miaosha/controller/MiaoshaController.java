@@ -176,7 +176,7 @@ public class MiaoshaController implements InitializingBean {
     	if(user == null) {
     		return Result.error(CodeMsg.SESSION_ERROR);
     	}
-    	long result  =miaoshaService.getMiaoshaResult(user.getId(), goodsId);
+    	long result = miaoshaService.getMiaoshaResult(user.getId(), goodsId);
     	return Result.success(result);
     }
 
