@@ -57,32 +57,45 @@ public class MiaoshaController implements InitializingBean {
 	
 	@Autowired
 	MQSender sender;
-	
+
+	/**
+	 * 本地缓存超额 秒杀数量判断
+	 */
 	private HashMap<Long, Boolean> localOverMap =  new HashMap<Long, Boolean>();
 	
 	/**
-	 * 系统初始化
+	 * 系统初始化  加载秒杀商品数量到redis
 	 * */
+	@Override
 	public void afterPropertiesSet() throws Exception {
+		//获取所有商品
 		List<GoodsVo> goodsList = goodsService.listGoodsVo();
 		if(goodsList == null) {
 			return;
 		}
+		//循环保存到缓存
 		for(GoodsVo goods : goodsList) {
 			redisService.set(GoodsKey.getMiaoshaGoodsStock, ""+goods.getId(), goods.getStockCount());
 			localOverMap.put(goods.getId(), false);
 		}
 	}
-	
+
+	/**
+	 * 重置所有秒杀参数
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/reset", method=RequestMethod.GET)
     @ResponseBody
     public Result<Boolean> reset(Model model) {
 		List<GoodsVo> goodsList = goodsService.listGoodsVo();
 		for(GoodsVo goods : goodsList) {
+			//重置缓存
 			goods.setStockCount(10);
 			redisService.set(GoodsKey.getMiaoshaGoodsStock, ""+goods.getId(), 10);
 			localOverMap.put(goods.getId(), false);
 		}
+		//秒杀订单
 		redisService.delete(OrderKey.getMiaoshaOrderByUidGid);
 		redisService.delete(MiaoshaKey.isGoodsOver);
 		miaoshaService.reset(goodsList);
@@ -114,8 +127,9 @@ public class MiaoshaController implements InitializingBean {
     		return Result.error(CodeMsg.MIAO_SHA_OVER);
     	}
     	//预减库存
-    	long stock = redisService.decr(GoodsKey.getMiaoshaGoodsStock, ""+goodsId);//10
+    	long stock = redisService.decr(GoodsKey.getMiaoshaGoodsStock, ""+goodsId);
     	if(stock < 0) {
+    		//重置内存标记
     		 localOverMap.put(goodsId, true);
     		return Result.error(CodeMsg.MIAO_SHA_OVER);
     	}

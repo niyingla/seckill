@@ -43,6 +43,7 @@ public class RedisService {
 		 Jedis jedis = null;
 		 try {
 			 jedis =  jedisPool.getResource();
+			 //json化
 			 String str = beanToString(value);
 			 if(str == null || str.length() <= 0) {
 				 return false;
@@ -50,9 +51,11 @@ public class RedisService {
 			//生成真正的key
 			 String realKey  = prefix.getPrefix() + key;
 			 int seconds =  prefix.expireSeconds();
+			 //没有过期时间
 			 if(seconds <= 0) {
 				 jedis.set(realKey, str);
 			 }else {
+			 	//直接设置
 				 jedis.setex(realKey, seconds, str);
 			 }
 			 return true;
