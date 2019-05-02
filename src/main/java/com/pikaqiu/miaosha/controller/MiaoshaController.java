@@ -103,6 +103,8 @@ public class MiaoshaController implements InitializingBean {
 	}
 	
 	/**
+	 * 本地内存 -》 redis -》 消息队列 -》 慢慢消费（读/写mysql）
+	 * 所有操作尽量不再数据库 数据库最好放在消息队列后 慢慢操作
 	 * QPS:1306
 	 * 5000 * 10
 	 * QPS: 2114
