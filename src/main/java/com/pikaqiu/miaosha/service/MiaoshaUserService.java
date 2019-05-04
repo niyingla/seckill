@@ -28,7 +28,12 @@ public class MiaoshaUserService {
 	
 	@Autowired
 	RedisService redisService;
-	
+
+	/**
+	 * 获取用户信息
+	 * @param id
+	 * @return
+	 */
 	public MiaoshaUser getById(long id) {
 		//取缓存
 		MiaoshaUser user = redisService.get(MiaoshaUserKey.getById, ""+id, MiaoshaUser.class);
@@ -43,6 +48,14 @@ public class MiaoshaUserService {
 		return user;
 	}
 	// http://blog.csdn.net/tTU1EvLDeLFq5btqiK/article/details/78693323
+
+	/**
+	 * 修改密码
+	 * @param token
+	 * @param id
+	 * @param formPass
+	 * @return
+	 */
 	public boolean updatePassword(String token, long id, String formPass) {
 		//取user
 		MiaoshaUser user = getById(id);
@@ -62,6 +75,12 @@ public class MiaoshaUserService {
 	}
 
 
+	/**
+	 * 通过token获取用户
+	 * @param response
+	 * @param token
+	 * @return
+	 */
 	public MiaoshaUser getByToken(HttpServletResponse response, String token) {
 		if(StringUtils.isEmpty(token)) {
 			return null;

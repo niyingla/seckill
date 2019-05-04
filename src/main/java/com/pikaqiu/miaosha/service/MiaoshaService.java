@@ -93,6 +93,13 @@ public class MiaoshaService {
 		orderService.deleteOrders();
 	}
 
+	/**
+	 * 检查路径
+	 * @param user
+	 * @param goodsId
+	 * @param path
+	 * @return
+	 */
 	public boolean checkPath(MiaoshaUser user, long goodsId, String path) {
 		if(user == null || path == null) {
 			return false;
@@ -101,6 +108,12 @@ public class MiaoshaService {
 		return path.equals(pathOld);
 	}
 
+	/**
+	 * 创建mdk加密路径
+	 * @param user
+	 * @param goodsId
+	 * @return
+	 */
 	public String createMiaoshaPath(MiaoshaUser user, long goodsId) {
 		if(user == null || goodsId <=0) {
 			return null;
@@ -147,22 +160,41 @@ public class MiaoshaService {
 		return image;
 	}
 
+	/**
+	 * 校验数字验证码
+	 * @param user
+	 * @param goodsId
+	 * @param verifyCode
+	 * @return
+	 */
 	public boolean checkVerifyCode(MiaoshaUser user, long goodsId, int verifyCode) {
+		//不存在或者错误 直接返回
 		if(user == null || goodsId <=0) {
 			return false;
 		}
+		//获取之前的结果
 		Integer codeOld = redisService.get(MiaoshaKey.getMiaoshaVerifyCode, user.getId()+","+goodsId, Integer.class);
+		//判空
 		if(codeOld == null || codeOld - verifyCode != 0 ) {
 			return false;
 		}
+		//结果争取 直接删除
 		redisService.delete(MiaoshaKey.getMiaoshaVerifyCode, user.getId()+","+goodsId);
 		return true;
 	}
-	
+
+	/**
+	 * 获取验证表达式的值
+	 * @param exp
+	 * @return
+	 */
 	private static int calc(String exp) {
 		try {
+			//创建js引擎管理
 			ScriptEngineManager manager = new ScriptEngineManager();
+			//获取js引擎
 			ScriptEngine engine = manager.getEngineByName("JavaScript");
+			//获取表达式的值
 			return (Integer)engine.eval(exp);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -175,11 +207,14 @@ public class MiaoshaService {
 	 * + - *
 	 * */
 	private String generateVerifyCode(Random rdm) {
+		//前三位计算数字  获取
 		int num1 = rdm.nextInt(10);
 	    int num2 = rdm.nextInt(10);
 		int num3 = rdm.nextInt(10);
+		//计算符号获取
 		char op1 = ops[rdm.nextInt(3)];
 		char op2 = ops[rdm.nextInt(3)];
+		//生成算式
 		String exp = ""+ num1 + op1 + num2 + op2 + num3;
 		return exp;
 	}
