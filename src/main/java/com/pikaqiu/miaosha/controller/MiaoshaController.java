@@ -200,16 +200,25 @@ public class MiaoshaController implements InitializingBean {
     	if(user == null) {
     		return Result.error(CodeMsg.SESSION_ERROR);
     	}
+    	//验证数字验证码
     	boolean check = miaoshaService.checkVerifyCode(user, goodsId, verifyCode);
     	if(!check) {
     		return Result.error(CodeMsg.REQUEST_ILLEGAL);
     	}
+    	//创建秒杀路径
     	String path  =miaoshaService.createMiaoshaPath(user, goodsId);
     	return Result.success(path);
     }
-    
-    
-    @RequestMapping(value="/verifyCode", method=RequestMethod.GET)
+
+
+	/**
+	 * 获取验证码图片
+	 * @param response
+	 * @param user
+	 * @param goodsId
+	 * @return
+	 */
+	@RequestMapping(value="/verifyCode", method=RequestMethod.GET)
     @ResponseBody
     public Result<String> getMiaoshaVerifyCod(HttpServletResponse response,MiaoshaUser user,
     		@RequestParam("goodsId")long goodsId) {
@@ -217,8 +226,10 @@ public class MiaoshaController implements InitializingBean {
     		return Result.error(CodeMsg.SESSION_ERROR);
     	}
     	try {
+    		//创建验证码图片
     		BufferedImage image  = miaoshaService.createVerifyCode(user, goodsId);
     		OutputStream out = response.getOutputStream();
+    		//流输出
     		ImageIO.write(image, "JPEG", out);
     		out.flush();
     		out.close();
