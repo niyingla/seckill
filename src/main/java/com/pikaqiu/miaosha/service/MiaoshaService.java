@@ -1,27 +1,23 @@
 package com.pikaqiu.miaosha.service;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.Random;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import com.pikaqiu.miaosha.domain.MiaoshaOrder;
 import com.pikaqiu.miaosha.domain.MiaoshaUser;
 import com.pikaqiu.miaosha.domain.OrderInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.pikaqiu.miaosha.redis.MiaoshaKey;
 import com.pikaqiu.miaosha.redis.RedisService;
 import com.pikaqiu.miaosha.util.MD5Util;
 import com.pikaqiu.miaosha.util.UUIDUtil;
 import com.pikaqiu.miaosha.vo.GoodsVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("restriction")
 @Service
@@ -87,7 +83,11 @@ public class MiaoshaService {
 	private boolean getGoodsOver(long goodsId) {
 		return redisService.exists(MiaoshaKey.isGoodsOver, ""+goodsId);
 	}
-	
+
+	/**
+	 * 循环重置库存  删除订单
+	 * @param goodsList
+	 */
 	public void reset(List<GoodsVo> goodsList) {
 		goodsService.resetStock(goodsList);
 		orderService.deleteOrders();

@@ -43,6 +43,7 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter{
 		if(handler instanceof HandlerMethod) {
 		    //获取用户
 			MiaoshaUser user = getUser(request, response);
+			//设置user到ThreadLocal
 			UserContext.setUser(user);
 			HandlerMethod hm = (HandlerMethod)handler;
 			//获取方法上的访问注解

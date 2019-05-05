@@ -23,6 +23,11 @@ public class GoodsService {
 		return goodsDao.getGoodsVoByGoodsId(goodsId);
 	}
 
+	/**
+	 * 减库存
+	 * @param goods
+	 * @return
+	 */
 	public boolean reduceStock(GoodsVo goods) {
 		MiaoshaGoods g = new MiaoshaGoods();
 		g.setGoodsId(goods.getId());
@@ -30,6 +35,10 @@ public class GoodsService {
 		return ret > 0;
 	}
 
+	/**
+	 * 重置库存
+	 * @param goodsList
+	 */
 	public void resetStock(List<GoodsVo> goodsList) {
 		for(GoodsVo goods : goodsList ) {
 			MiaoshaGoods g = new MiaoshaGoods();

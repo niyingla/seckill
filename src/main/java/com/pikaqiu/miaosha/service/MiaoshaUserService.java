@@ -117,7 +117,13 @@ public class MiaoshaUserService {
 		addCookie(response, token, user);
 		return token;
 	}
-	
+
+	/**
+	 * 添加cookie
+	 * @param response
+	 * @param token
+	 * @param user
+	 */
 	private void addCookie(HttpServletResponse response, String token, MiaoshaUser user) {
 		redisService.set(MiaoshaUserKey.token, token, user);
 		Cookie cookie = new Cookie(COOKI_NAME_TOKEN, token);

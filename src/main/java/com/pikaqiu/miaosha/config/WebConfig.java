@@ -11,18 +11,28 @@ import java.util.List;
 
 @Configuration
 public class WebConfig  extends WebMvcConfigurerAdapter{
-	
+	/**
+	 * web配置
+	 */
 	@Autowired
 	UserArgumentResolver userArgumentResolver;
 	
 	@Autowired
 	AccessInterceptor accessInterceptor;
-	
+
+	/**
+	 * 配置参数解析（set用户信息到controller 入参）
+	 * @param argumentResolvers
+	 */
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.add(userArgumentResolver);
 	}
-	
+
+	/**
+	 * 添加拦截器
+	 * @param registry
+	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(accessInterceptor);
