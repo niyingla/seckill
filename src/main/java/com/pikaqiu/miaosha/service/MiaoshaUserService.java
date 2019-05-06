@@ -92,8 +92,14 @@ public class MiaoshaUserService {
 		}
 		return user;
 	}
-	
 
+
+	/**
+	 * 登陆方法
+	 * @param response
+	 * @param loginVo
+	 * @return
+	 */
 	public String login(HttpServletResponse response, LoginVo loginVo) {
 		if(loginVo == null) {
 			throw new GlobalException(CodeMsg.SERVER_ERROR);
