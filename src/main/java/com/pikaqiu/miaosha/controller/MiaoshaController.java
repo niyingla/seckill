@@ -1,24 +1,5 @@
 package com.pikaqiu.miaosha.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.pikaqiu.miaosha.access.AccessLimit;
 import com.pikaqiu.miaosha.domain.MiaoshaOrder;
 import com.pikaqiu.miaosha.domain.MiaoshaUser;
@@ -35,6 +16,19 @@ import com.pikaqiu.miaosha.service.MiaoshaService;
 import com.pikaqiu.miaosha.service.MiaoshaUserService;
 import com.pikaqiu.miaosha.service.OrderService;
 import com.pikaqiu.miaosha.vo.GoodsVo;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("/miaosha")
@@ -103,6 +97,11 @@ public class MiaoshaController implements InitializingBean {
 	}
 	
 	/**
+	 * 层层筛选
+	 * 1 过滤无效请求（路径验证）
+	 * 2 减少网络请求（内存标记）
+	 * 3 减少数据库操作（redis 内存缓存数据）
+	 * 4 请求异步（rabbitmq 异步消费，减小数据库压力）
 	 * 本地内存 -》 redis -》 消息队列 -》 慢慢消费（读/写mysql）
 	 * 所有操作尽量不再数据库 数据库最好放在消息队列后 慢慢操作
 	 * QPS:1306

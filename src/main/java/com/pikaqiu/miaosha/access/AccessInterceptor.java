@@ -32,6 +32,9 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter{
 
 	/**
 	 * 前置方法判断是否请求超额 （其他用的默认）
+	 *
+	 * 拦截 用流写回错误信息
+	 * 放行 直接走
 	 * @param request
 	 * @param response
 	 * @param handler
