@@ -17,6 +17,11 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 	@Autowired
     MiaoshaUserService userService;
 
+	/**
+	 * 判断是否是需要注入的类型
+	 * @param parameter
+	 * @return
+	 */
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		Class<?> clazz = parameter.getParameterType();

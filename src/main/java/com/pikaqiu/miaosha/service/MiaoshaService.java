@@ -124,6 +124,12 @@ public class MiaoshaService {
 		return str;
 	}
 
+	/**
+	 * 创建图形验证码
+	 * @param user
+	 * @param goodsId
+	 * @return
+	 */
 	public BufferedImage createVerifyCode(MiaoshaUser user, long goodsId) {
 		if(user == null || goodsId <=0) {
 			return null;
@@ -202,8 +208,13 @@ public class MiaoshaService {
 		}
 	}
 
-	private static char[] ops = new char[] {'+', '-', '*'};
 	/**
+	 * 定义运算符
+	 */
+	private static char[] ops = new char[] {'+', '-', '*'};
+
+	/**
+	 * 获取随机计算字符串
 	 * + - *
 	 * */
 	private String generateVerifyCode(Random rdm) {

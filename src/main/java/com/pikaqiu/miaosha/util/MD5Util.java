@@ -35,7 +35,7 @@ public class MD5Util {
 	/**
 	 *
 	 * 1 前端&固定盐 md5 2 后台&数据库盐md5
-	 * 
+	 *
 	 * 用户输入密码  - 》 数据库保存密码
 	 * @param inputPass
 	 * @param saltDB  数据库盐
