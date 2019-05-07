@@ -30,28 +30,28 @@ public class SampleController {
 //	@RequestMapping("/mq/header")
 //    @ResponseBody
 //    public Result<String> header() {
-//		sender.sendHeader("hello,imooc");
+//		sender.sendHeader("hello,pikaqiu");
 //        return Result.success("Hello，world");
 //    }
 //	
 //	@RequestMapping("/mq/fanout")
 //    @ResponseBody
 //    public Result<String> fanout() {
-//		sender.sendFanout("hello,imooc");
+//		sender.sendFanout("hello,pikaqiu");
 //        return Result.success("Hello，world");
 //    }
 //	
 //	@RequestMapping("/mq/topic")
 //    @ResponseBody
 //    public Result<String> topic() {
-//		sender.sendTopic("hello,imooc");
+//		sender.sendTopic("hello,pikaqiu");
 //        return Result.success("Hello，world");
 //    }
 //	
 //	@RequestMapping("/mq")
 //    @ResponseBody
 //    public Result<String> mq() {
-//		sender.send("hello,imooc");
+//		sender.send("hello,pikaqiu");
 //        return Result.success("Hello，world");
 //    }
 	
