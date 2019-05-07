@@ -1,17 +1,15 @@
 package com.pikaqiu.miaosha.redis;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.alibaba.fastjson.JSON;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.ScanParams;
 import redis.clients.jedis.ScanResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RedisService {
@@ -124,11 +122,17 @@ public class RedisService {
 			  returnToPool(jedis);
 		 }
 	}
-	
+
+	/**
+	 * 删除ridis 秒杀订单信息
+	 * @param prefix
+	 * @return
+	 */
 	public boolean delete(KeyPrefix prefix) {
 		if(prefix == null) {
 			return false;
 		}
+		//获取
 		List<String> keys = scanKeys(prefix.getPrefix());
 		if(keys==null || keys.size() <= 0) {
 			return true;
@@ -136,6 +140,7 @@ public class RedisService {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
+			//删除所有key
 			jedis.del(keys.toArray(new String[0]));
 			return true;
 		} catch (final Exception e) {
@@ -147,17 +152,27 @@ public class RedisService {
 			}
 		}
 	}
-	
+
+	/**
+	 * 获取所有key 匹配到的redis key
+	 * @param key
+	 * @return
+	 */
 	public List<String> scanKeys(String key) {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
+			//匹配到的所有key 集合
 			List<String> keys = new ArrayList<String>();
+			//游标  从第0个开始
 			String cursor = "0";
 			ScanParams sp = new ScanParams();
+			//匹配内容
 			sp.match("*"+key+"*");
+			//匹配数量
 			sp.count(100);
 			do{
+				//获取结果
 				ScanResult<String> ret = jedis.scan(cursor, sp);
 				List<String> result = ret.getResult();
 				if(result!=null && result.size() > 0){
@@ -165,6 +180,7 @@ public class RedisService {
 				}
 				//再处理cursor
 				cursor = ret.getStringCursor();
+				//达成此条件时退出循环 （do 然后 while（判断））
 			}while(!cursor.equals("0"));
 			return keys;
 		} finally {
@@ -191,12 +207,18 @@ public class RedisService {
 	}
 
 	@SuppressWarnings("unchecked")
+	/**
+	 * string 转对象
+	 */
 	public static <T> T stringToBean(String str, Class<T> clazz) {
+		//判空
 		if(str == null || str.length() <= 0 || clazz == null) {
 			 return null;
 		}
+		//逐个判断类型
 		if(clazz == int.class || clazz == Integer.class) {
 			 return (T)Integer.valueOf(str);
+			 //判断string
 		}else if(clazz == String.class) {
 			 return (T)str;
 		}else if(clazz == long.class || clazz == Long.class) {
