@@ -25,7 +25,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		Class<?> clazz = parameter.getParameterType();
-		return clazz== MiaoshaUser.class;
+		return clazz == MiaoshaUser.class;
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 	 */
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+								  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		return UserContext.getUser();
 	}
 
